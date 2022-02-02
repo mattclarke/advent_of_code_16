@@ -1,0 +1,26 @@
+cpy a b                     # b = a (= 12)
+dec b                       # b-- (= 11)
+    cpy a d                 # d = a (= 12, 132, 1320, 11880, 95040, 665280)
+    cpy 0 a                 # a = 0
+        cpy b c             # c = b (= 11, 10, 9, 8, 7, 6)
+            inc a           # a++
+            dec c           # c--
+            jnz c -2        # finishes when c == 0 => a += c (a = 11, 10, 9, ...)
+        dec d               # d--
+        jnz d -5            # finishes when d == 0 => a = c * d (a = 132, 1320, 11880, 95040, 665280, previous * 8, previous * 7, ...)
+    dec b                   # b--   (= 10, 9, 8, 7, 6)
+    cpy b c                 # c = b (= 10, 9, 8, 7, 6)
+    cpy c d                 # d = c (= 10, 9, 8, 7, 6)
+        dec d               # d--
+        inc c               # c++
+        jnz d -2            # finishes when d == 0 => c += d (= 20, 18, 16, 14, 12, 10, 8)
+    tgl c                   # toggle c (first time toggles when c = 8 then 6, 4, 2)
+    cpy -16 c               # c = -16
+    jnz 1 c                 # 4th tgl => cpy 1 c => c = 1
+cpy 76 c                    # c = 76
+    jnz 80 d                # 3rd tgl => cpy 80 d => d = 80
+        inc a
+        inc d               # 2nd tgl => dec d
+        jnz d -2            # a += d
+    inc c                   # 1st tgl => dec c
+    jnz c -5
